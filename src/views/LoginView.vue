@@ -1,4 +1,10 @@
 <script setup>
+import { useForm, useField } from 'vee-validate'
+
+const { handleSubmit } = useForm()
+
+const email = useField('email')
+const password = useField('password')
 
 </script>
 
@@ -22,6 +28,7 @@
         >
             Inicia sesion con tu cuenta
         </v-card-subtitle>
+
         <v-form
             @submit.prevent
             class="mt-5"
@@ -30,11 +37,13 @@
                 type="email"
                 label="Email"
                 bg-color="blue-grey-lighten-5"
+                v-model="email.value.value"
             ></v-text-field>
             <v-text-field
                 type="password"
                 label="Password"
                 bg-color="blue-grey-lighten-5"
+                v-model="password.value.value"
             ></v-text-field>
             <v-btn
                 block
@@ -44,5 +53,6 @@
                 Iniciar Sesión
             </v-btn>
         </v-form>
+
     </v-card>
 </template>
