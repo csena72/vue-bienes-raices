@@ -38,6 +38,14 @@ const onSubmit = handleSubmit( (values) => {
             Inicia sesion con tu cuenta
         </v-card-subtitle>
 
+        <v-alert
+            v-if="auth.hasError"
+            class="mt-5"
+            color="error"
+            icon="$error"
+            :title="auth.errorMsg"
+        ></v-alert>
+
         <v-form
             @submit.prevent
             class="mt-5"
