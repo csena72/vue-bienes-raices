@@ -1,6 +1,13 @@
 <script setup>
 import { useForm, useField } from 'vee-validate'
+import { collection, addDoc } from "firebase/firestore"
+import { useFirestore } from 'vuefire'
 import { validationSchema, imageSchema } from '@/validation/propiedadSchema'
+import { useRouter } from 'vue-router'
+
+const db = useFirestore()
+
+const router = useRouter()
 
 const items = [1,2,3,4,5]
 
@@ -18,10 +25,20 @@ const habitaciones = useField('habitaciones')
 const wc = useField('wc')
 const estacionamiento = useField('estacionamiento')
 const descripcion = useField('descripcion')
+const pileta = useField('pileta', null, { initialValue: false })
 
 
-const submit = handleSubmit( (values) => {
-    console.log(values);
+const submit = handleSubmit( async(values) => {
+
+    const { imagen, ...propiedad } = values
+
+    const docRef = await addDoc(collection(db, "propiedades"), {
+        ...propiedad,
+    });
+
+    if ( docRef.id) {
+        router.push({ name: 'admin-propiedades' })
+    }
 })
 
 </script>
@@ -109,7 +126,11 @@ const submit = handleSubmit( (values) => {
                 v-model="descripcion.value.value"
                 :error-messages="descripcion.errorMessage.value"
             ></v-textarea>
-            <v-checkbox label="Pileta"/>
+            <v-checkbox 
+                label="Pileta"
+                v-model="pileta.value.value"
+                :error-messages="pileta.errorMessage.value"
+            />
 
             <v-btn
                 color="pink-accent-3"
